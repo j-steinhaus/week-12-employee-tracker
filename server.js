@@ -31,6 +31,7 @@ connection.connect(function (err) {
   firstPrompt();
 });
 
+// main menu for employee database
 function firstPrompt() {
   inquirer
     .prompt({
@@ -47,6 +48,8 @@ function firstPrompt() {
         "End",
       ],
     })
+
+    // selections for employee database
     .then(function ({ task }) {
       switch (task) {
         case "View Employees":
@@ -80,6 +83,7 @@ function firstPrompt() {
     });
 }
 
+// functions per each selection in employee database
 function viewEmployee() {
   console.log("Viewing employees\n");
 
