@@ -3,16 +3,18 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 require("console.table");
 
-const connection = mysql.createConnection({
-  host: "localhost",
-
-  port: 3306,
-
-  user: "root",
-
-  password: "rootroot",
-  database: "employeesDB",
-});
+//connection for the database
+const connection = mysql.createConnection(
+  {
+    host: "localhost",
+    // username,
+    user: "root",
+    // password
+    password: "rootroot",
+    database: "employeesDB",
+  },
+  console.log(`you are now connected to the employees database.`)
+);
 
 connection.connect(function (err) {
   if (err) throw err;
