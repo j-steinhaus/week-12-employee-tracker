@@ -1,20 +1,15 @@
-//dependencies required
+// root
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
 require("console.table");
-//const sql = require("./sql");
 
-//mysql connection
 const connection = mysql.createConnection({
   host: "localhost",
 
-  // Your port; if not 3306
   port: 3306,
 
-  // Your username
   user: "root",
 
-  // Your password
   password: "rootroot",
   database: "employeesDB",
 });
@@ -31,11 +26,9 @@ connection.connect(function (err) {
     ╚═══╩╩╩╣╔═╩═╩══╩═╗╔╩══╩══╝╚╝╚╝╚╩╝╚╩╝╚╩╝╚╩═╗╠══╩╝
     ───────║║──────╔═╝║─────────────────────╔═╝║
     ───────╚╝──────╚══╝─────────────────────╚══╝`);
-  // runs the app
   firstPrompt();
 });
 
-// function which prompts the user for what action they should take
 function firstPrompt() {
   inquirer
     .prompt({
@@ -85,7 +78,6 @@ function firstPrompt() {
     });
 }
 
-//View Employees/ READ all, SELECT * FROM
 function viewEmployee() {
   console.log("Viewing employees\n");
 
@@ -108,8 +100,6 @@ function viewEmployee() {
   });
 }
 
-//"View Employees by Department" / READ by, SELECT * FROM
-// Make a department array
 function viewEmployeeByDepartment() {
   console.log("Viewing employees by department\n");
 
@@ -136,7 +126,6 @@ function viewEmployeeByDepartment() {
   });
 }
 
-// User choose the department list, then employees pop up
 function promptDepartment(departmentChoices) {
   inquirer
     .prompt([
@@ -169,7 +158,6 @@ function promptDepartment(departmentChoices) {
     });
 }
 
-// Make a employee array
 function addEmployee() {
   console.log("Inserting an employee!");
 
@@ -216,7 +204,6 @@ function promptInsert(roleChoices) {
       console.log(answer);
 
       var query = `INSERT INTO employee SET ?`;
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         query,
         {
@@ -237,8 +224,6 @@ function promptInsert(roleChoices) {
     });
 }
 
-//"Remove Employees" / DELETE, DELETE FROM
-// Make a employee array to delete
 function removeEmployees() {
   console.log("Deleting an employee");
 
@@ -260,7 +245,6 @@ function removeEmployees() {
   });
 }
 
-// User choose the employee list, then employee is deleted
 function promptDelete(deleteEmployeeChoices) {
   inquirer
     .prompt([
@@ -273,7 +257,6 @@ function promptDelete(deleteEmployeeChoices) {
     ])
     .then(function (answer) {
       var query = `DELETE FROM employee WHERE ?`;
-      // when finished prompting, insert a new item into the db with that info
       connection.query(query, { id: answer.employeeId }, function (err, res) {
         if (err) throw err;
 
@@ -285,7 +268,6 @@ function promptDelete(deleteEmployeeChoices) {
     });
 }
 
-//"Update Employee Role" / UPDATE,
 function updateEmployeeRole() {
   employeeArray();
 }
@@ -358,7 +340,6 @@ function promptEmployeeRole(employeeChoices, roleChoices) {
     ])
     .then(function (answer) {
       var query = `UPDATE employee SET role_id = ? WHERE id = ?`;
-      // when finished prompting, insert a new item into the db with that info
       connection.query(
         query,
         [answer.roleId, answer.employeeId],
@@ -374,7 +355,6 @@ function promptEmployeeRole(employeeChoices, roleChoices) {
     });
 }
 
-//"Add Role" / CREATE: INSERT INTO
 function addRole() {
   var query = `SELECT d.id, d.name, r.salary AS budget
     FROM employee e
@@ -387,7 +367,6 @@ function addRole() {
   connection.query(query, function (err, res) {
     if (err) throw err;
 
-    // (callbackfn: (value: T, index: number, array: readonly T[]) => U, thisArg?: any)
     const departmentChoices = res.map(({ id, name }) => ({
       value: id,
       name: `${id} ${name}`,
